@@ -35,13 +35,14 @@ public class GmailService {
             
             // replace all heart tags with values
             for(String tag : tags.keySet()) {
-                body = body.replace("%" + tag + "%", tags.get(tag));
+                body = body.replace("{{" + tag + "}}", tags.get(tag));
             }
             
             // send email
             sendMail(email, subject, body, true);
             
         } catch (Exception ex) {
+            System.err.println(ex);
             Logger.getLogger(GmailService.class.getName()).log(Level.SEVERE, null, ex);
         }
         

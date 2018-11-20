@@ -5,6 +5,7 @@
  */
 package services;
 
+import database.NotesDBException;
 import database.UserDB;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -48,5 +49,26 @@ public class AccountService {
         }
 
         return null;
+    }
+    
+    public boolean forgotPassword(String email, String path){
+        UserService us = new UserService();
+        User user = us.getUserByEmail(email);
+        
+        if(user != null){
+                String subject = "Forgot Password";
+                String template = path + "/emailtemplates/password.html";
+                
+                HashMap<String, String> tags = new HashMap<>();
+                tags.put("firstname", user.getFirstname());
+                tags.put("lastname", user.getLastname());
+                tags.put("username", user.getUsername());
+                tags.put("password", user.getPassword());
+                
+                GmailService.sendMail(email, subject, template, tags);
+                return true;
+        }
+        
+        return false;
     }
 }

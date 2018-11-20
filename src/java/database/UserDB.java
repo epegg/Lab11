@@ -1,11 +1,6 @@
 package database;
 
 import models.User;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -84,6 +79,16 @@ public class UserDB {
             trans.rollback();
             Logger.getLogger(UserDB.class.getName()).log(Level.SEVERE, "Cannot delete " + user.toString(), ex);
             throw new NotesDBException("Error deleting user");
+        } finally {
+            em.close();
+        }
+    }
+
+    public User getUserByEmail(String email) {
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        try {
+            User user = em.createNamedQuery("User.findByEmail", User.class).setParameter("email", email).getSingleResult();
+            return user;
         } finally {
             em.close();
         }

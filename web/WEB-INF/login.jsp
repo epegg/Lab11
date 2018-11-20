@@ -19,6 +19,6 @@
             <input type="submit" value="Submit">
         </form>
         <div style="color:red;">${message}</div>
-        <a href="/forgot">Forgot Password?</a>
+        <a href="forgot">Forgot Password?</a>
     </body>
 </html>
